@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#08090b">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Um Dia">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<title>Um Dia de Cada Vez</title>
+<style>
+*{box-sizing:border-box}html{background:#08090b}body{margin:0;background:#08090b;color:#f5f5f5;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.app{max-width:520px;margin:auto;min-height:100vh;padding:20px 18px 110px;background:linear-gradient(180deg,#090a0d,#101216)}
+.top{display:flex;justify-content:space-between;align-items:center}.menu{font-size:29px;color:#d9a94b;cursor:pointer}.best{text-align:center;color:#aaa;font-size:12px}.best b{display:block;color:#e6b95f;font-size:23px}
+h1{text-align:center;font-size:27px;letter-spacing:1px;margin:31px 0 4px}h1 span{color:#d9a94b}.sub{text-align:center;color:#999;font-size:12px;margin-bottom:22px}
+.screen{display:none}.screen.active{display:block}.card{background:linear-gradient(145deg,#15171b,#0f1114);border:1px solid #202329;border-radius:23px;padding:22px 17px;margin:15px 0}.streak{text-align:center}.label{font-size:15px}.number{font-size:104px;line-height:1;font-weight:800;color:#e6b95f;margin:10px 0}.days{font-size:25px;font-weight:800;letter-spacing:3px}.muted{color:#999;margin-top:7px}
+.quote{text-align:center;font-size:18px;line-height:1.45}.quoteMark{font-size:37px;color:#d9a94b}.quote button{margin-top:16px}
+button{width:100%;border:0;border-radius:17px;padding:18px;font-size:17px;font-weight:800;background:linear-gradient(135deg,#ffe7a5,#d9a64d);color:#101010;cursor:pointer}.secondary{background:#202329;color:#eee}.danger{background:#21191a;color:#e9a3a3}.updated{text-align:center;color:#999;font-size:12px;margin:12px 0 20px}
+.sectionTitle{display:flex;justify-content:space-between;font-weight:800;margin-bottom:15px}.sectionTitle span{font-weight:500;color:#999;font-size:13px}.journey{display:flex;gap:8px;overflow:auto}.dot{width:39px;height:39px;border:2px solid #385244;border-radius:50%;display:grid;place-items:center;color:#62e69b;flex:none}.dot.future{background:#26292e;border-color:#26292e;color:#777}.dot.current{border-color:#e6b95f}
+.milestones{display:flex;gap:12px;overflow:auto}.mile{min-width:68px;text-align:center}.circle{height:58px;width:58px;margin:auto;border:2px solid #666;border-radius:50%;display:grid;place-items:center;color:#e6b95f;font-weight:800}.circle.done{border-color:#58d894;color:#58d894}.mile small{display:block;color:#aaa;margin-top:7px}
+h2{font-size:22px;margin:10px 0 4px}.pageIntro{color:#999;font-size:13px;margin-bottom:18px}.list{display:grid;gap:10px}.row{background:#15171b;border:1px solid #24272c;border-radius:16px;padding:15px}.row strong{display:block}.row small{color:#999}.empty{text-align:center;color:#888;padding:30px 10px}
+input,textarea{width:100%;background:#0d0f12;border:1px solid #292d33;color:#fff;border-radius:14px;padding:14px;font:inherit;outline:none}textarea{min-height:110px;resize:vertical}.form{display:grid;gap:10px}.goal{display:flex;align-items:center;gap:12px}.goalIcon{width:45px;height:45px;border-radius:50%;background:#22252a;display:grid;place-items:center;color:#e6b95f;font-weight:800}.goalInfo{flex:1}.progress{height:7px;background:#272a2f;border-radius:99px;overflow:hidden;margin-top:9px}.progress i{display:block;height:100%;background:#d9a94b;border-radius:99px}.check{width:28px;height:28px;border-radius:50%;border:1px solid #555;display:grid;place-items:center;color:#58d894;flex:none}.check.done{background:#173323;border-color:#58d894}
+.tabs{display:flex;gap:7px;overflow:auto;margin:13px 0}.tab{width:auto;padding:10px 14px;border-radius:12px;background:#1a1c20;color:#aaa;font-size:13px}.tab.active{background:#d9a94b;color:#111}
+.profileBox{text-align:center}.avatar{width:76px;height:76px;margin:auto;border-radius:50%;background:#202329;display:grid;place-items:center;font-size:32px;color:#e6b95f}.statGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#15171b;border:1px solid #24272c;border-radius:15px;padding:14px 5px;text-align:center}.stat b{display:block;font-size:21px;color:#e6b95f}.stat small{color:#999;font-size:11px}
+nav{position:fixed;bottom:0;left:0;right:0;max-width:520px;margin:auto;background:#0c0e11ee;border-top:1px solid #25282d;display:flex;justify-content:space-around;padding:9px 4px calc(9px + env(safe-area-inset-bottom));backdrop-filter:blur(12px);z-index:10}nav div{text-align:center;color:#888;font-size:10px;cursor:pointer;min-width:18%}nav div b{display:block;font-size:21px;margin-bottom:2px}nav .active{color:#f0c86f}
+.toast{position:fixed;left:50%;bottom:105px;transform:translateX(-50%);background:#202329;padding:12px 18px;border-radius:14px;opacity:0;transition:.25s;z-index:20;white-space:nowrap}.toast.show{opacity:1}
+.modal{position:fixed;inset:0;background:#000b;display:none;align-items:flex-end;z-index:30}.modal.show{display:flex}.sheet{width:100%;max-width:520px;margin:auto;background:#15171b;border-radius:25px 25px 0 0;padding:22px 18px calc(25px + env(safe-area-inset-bottom));border:1px solid #292d33}.sheet h3{margin-top:0}
+.smallBtn{padding:12px;font-size:14px}
+</style>
+</head>
+<body>
+<main class="app">
+  <div class="top"><div class="menu" id="menu">☰</div><div class="best">🔥<b id="best">0</b>melhor sequência</div></div>
+
+  <section id="home" class="screen active">
+    <h1>UM DIA <span>DE CADA VEZ</span></h1>
+    <div class="sub">SUA JORNADA. SUA ESCOLHA. SEU CONTROLE.</div>
+    <section class="card streak"><div class="label">VOCÊ ESTÁ HÁ</div><div class="number" id="count">0</div><div class="days">DIAS</div><div class="muted">Longe do vício</div></section>
+    <section class="card quote"><div class="quoteMark">“</div><div id="quote"></div><button class="secondary smallBtn" id="newQuote">Nova frase</button></section>
+    <button id="add">＋ HOJE EU ESCOLHI CONTINUAR</button>
+    <div class="updated" id="updated">Ainda não registrado hoje</div>
+    <section class="card"><div class="sectionTitle">MINHA JORNADA <span>10 dias</span></div><div class="journey" id="journey"></div></section>
+    <section class="card"><div class="sectionTitle">PRÓXIMAS CONQUISTAS</div><div class="milestones" id="milestones"></div></section>
+  </section>
+
+  <section id="history" class="screen">
+    <h2>Histórico</h2><div class="pageIntro">Cada registro é uma prova de que você esteve presente na própria escolha.</div>
+    <div class="statGrid"><div class="stat"><b id="histDays">0</b><small>dias registrados</small></div><div class="stat"><b id="histBest">0</b><small>melhor sequência</small></div><div class="stat"><b id="histTotal">0</b><small>registros</small></div></div>
+    <section class="card"><div class="sectionTitle">REGISTROS</div><div class="list" id="historyList"></div></section>
+  </section>
+
+  <section id="phrases" class="screen">
+    <h2>Frases</h2><div class="pageIntro">Palavras para aqueles momentos em que a decisão precisa falar mais alto.</div>
+    <section class="card quote"><div class="quoteMark">“</div><div id="phraseBig"></div><button id="phraseNext">Trocar frase</button></section>
+    <div class="list" id="phraseList"></div>
+  </section>
+
+  <section id="goals" class="screen">
+    <h2>Metas</h2><div class="pageIntro">Transforme a jornada em pequenos passos concretos.</div>
+    <section class="card"><div class="sectionTitle">NOVA META</div><div class="form"><input id="goalName" placeholder="Ex.: completar 30 dias"><input id="goalDays" type="number" min="1" placeholder="Quantidade de dias"><button id="addGoal">＋ Criar meta</button></div></section>
+    <section class="card"><div class="sectionTitle">MINHAS METAS</div><div class="list" id="goalList"></div></section>
+  </section>
+
+  <section id="profile" class="screen">
+    <h2>Perfil</h2><div class="pageIntro">Seu espaço para acompanhar a evolução.</div>
+    <section class="card profileBox"><div class="avatar">●</div><h2>Minha jornada</h2><div class="muted">Um dia de cada vez.</div></section>
+    <div class="statGrid"><div class="stat"><b id="pCurrent">0</b><small>sequência atual</small></div><div class="stat"><b id="pBest">0</b><small>recorde</small></div><div class="stat"><b id="pGoals">0</b><small>metas</small></div></div>
+    <section class="card"><div class="sectionTitle">MEU DIÁRIO</div><textarea id="diary" placeholder="Escreva aqui como você está se sentindo hoje..."></textarea><button id="saveDiary" style="margin-top:10px">Salvar diário</button></section>
+    <button class="danger" id="reset">Recomeçar contador</button>
+  </section>
+</main>
+
+<nav>
+  <div data-screen="home" class="active"><b>⌂</b>Início</div>
+  <div data-screen="history"><b>▥</b>Histórico</div>
+  <div data-screen="phrases"><b>❝</b>Frases</div>
+  <div data-screen="goals"><b>◎</b>Metas</div>
+  <div data-screen="profile"><b>●</b>Perfil</div>
+</nav>
+<div class="toast" id="toast"></div>
+<div class="modal" id="modal"><div class="sheet"><h3>Um Dia de Cada Vez</h3><p class="muted">V2 • seus dados ficam salvos neste aparelho.</p><button class="secondary" id="closeModal">Fechar</button></div></div>
+
+<script>
+const quotes=[
+"Você não precisa vencer para sempre. Só precisa vencer hoje.",
+"A vontade passa. A decisão fica.",
+"Não volte para aquilo que você decidiu deixar para trás.",
+"Mais um dia. Mais controle. Mais liberdade.",
+"Você está construindo uma versão de si que não depende desse hábito.",
+"Hoje não precisa ser perfeito. Precisa ser escolhido.",
+"Cada dia longe do vício é um voto na pessoa que você quer ser.",
+"Um dia difícil ainda pode terminar com uma escolha certa.",
+"Não negocie com aquilo que você já decidiu abandonar."
+];
+const milestones=[7,14,30,60,90,180,365];
+const defaultData={count:0,best:0,last:null,history:[],goals:[],diary:{},quoteIndex:0};
+let data;
+try{data={...defaultData,...JSON.parse(localStorage.getItem("udc_data")||"{}")}}catch(e){data={...defaultData}}
+data.history=data.history||[];data.goals=data.goals||[];data.diary=data.diary||{};
+
+const $=id=>document.getElementById(id);
+const todayKey=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+const dateLabel=k=>new Date(k+"T12:00:00").toLocaleDateString("pt-BR",{weekday:"short",day:"2-digit",month:"2-digit",year:"numeric"});
+function yesterdayKey(){const d=new Date();d.setDate(d.getDate()-1);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
+function save(){localStorage.setItem("udc_data",JSON.stringify(data))}
+function toast(t){$("toast").textContent=t;$("toast").classList.add("show");setTimeout(()=>$("toast").classList.remove("show"),2200)}
+function render(){
+  $("count").textContent=data.count;$("best").textContent=data.best;
+  $("quote").textContent=quotes[data.quoteIndex%quotes.length];
+  $("phraseBig").textContent=quotes[data.quoteIndex%quotes.length];
+  const last=data.last?new Date(data.last+"T12:00:00"):null;
+  $("updated").textContent=last?"Último registro: "+last.toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric"}):"Ainda não registrado hoje";
+  let j="";for(let i=1;i<=10;i++)j+=`<div class="dot ${i>data.count?"future":""} ${i===data.count?"current":""}">${i<=data.count?"✓":i}</div>`;$("journey").innerHTML=j;
+  $("milestones").innerHTML=milestones.map(x=>`<div class="mile"><div class="circle ${data.count>=x?"done":""}">${data.count>=x?"✓":x}</div><small>${x===30?"1 mês":x===60?"2 meses":x===90?"3 meses":x===180?"6 meses":x===365?"1 ano":x+" dias"}</small></div>`).join("");
+  $("histDays").textContent=data.history.length;$("histBest").textContent=data.best;$("histTotal").textContent=data.history.length;
+  $("pCurrent").textContent=data.count;$("pBest").textContent=data.best;$("pGoals").textContent=data.goals.length;
+  $("historyList").innerHTML=data.history.length?data.history.slice().reverse().map((x,i)=>`<div class="row"><strong>✓ ${dateLabel(x)}</strong><small>Dia ${data.history.length-i} registrado na sua jornada.</small></div>`).join(""):'<div class="empty">Nenhum dia registrado ainda.</div>';
+  $("phraseList").innerHTML=quotes.map((q,i)=>`<div class="row" onclick="setQuote(${i})"><strong>“${q}”</strong><small>Toque para usar esta frase.</small></div>`).join("");
+  $("goalList").innerHTML=data.goals.length?data.goals.map((g,i)=>{let pct=Math.min(100,Math.round(data.count/g.days*100));return `<div class="row goal"><div class="goalIcon">${g.days}</div><div class="goalInfo"><strong>${g.name}</strong><small>${Math.min(data.count,g.days)} / ${g.days} dias • ${pct}%</small><div class="progress"><i style="width:${pct}%"></i></div></div><div class="check ${data.count>=g.days?"done":""}">${data.count>=g.days?"✓":""}</div></div>`}).join(""):'<div class="empty">Crie sua primeira meta.</div>';
+  $("diary").value=data.diary[todayKey()]||"";
+}
+function setQuote(i){data.quoteIndex=i;save();render();showScreen("phrases")}
+$("add").onclick=()=>{
+  const t=todayKey();
+  if(data.last===t){toast("Você já registrou hoje. Amanhã continuamos.");return}
+  if(data.last===yesterdayKey()) data.count++;
+  else data.count=1;
+  data.best=Math.max(data.best,data.count);data.last=t;
+  if(!data.history.includes(t))data.history.push(t);
+  save();render();
+  toast(data.count%7===0?"🔥 Mais uma semana conquistada!":"✓ Hoje você escolheu continuar.");
+};
+$("newQuote").onclick=$("phraseNext").onclick=()=>{data.quoteIndex=(data.quoteIndex+1)%quotes.length;save();render()};
+$("addGoal").onclick=()=>{const n=$("goalName").value.trim(),d=parseInt($("goalDays").value,10);if(!n||!d||d<1){toast("Preencha a meta e a quantidade de dias.");return}data.goals.push({name:n,days:d});$("goalName").value="";$("goalDays").value="";save();render();toast("🎯 Meta criada.")};
+$("saveDiary").onclick=()=>{data.diary[todayKey()]=$("diary").value.trim();save();toast("✓ Diário salvo.")};
+$("reset").onclick=()=>{if(confirm("Recomeçar o contador? Seu recorde e histórico serão preservados.")){data.count=0;data.last=null;save();render();toast("Contador reiniciado. Um novo dia começa agora.")}};
+document.querySelectorAll("nav div").forEach(n=>n.onclick=()=>showScreen(n.dataset.screen));
+function showScreen(id){document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));$(id).classList.add("active");document.querySelectorAll("nav div").forEach(n=>n.classList.toggle("active",n.dataset.screen===id));window.scrollTo(0,0)}
+$("menu").onclick=()=>$("modal").classList.add("show");$("closeModal").onclick=()=>$("modal").classList.remove("show");$("modal").onclick=e=>{if(e.target.id==="modal")$("modal").classList.remove("show")};
+if("serviceWorker" in navigator)navigator.serviceWorker.register("./service-worker.js");
+render();
+</script>
+</body>
+</html>
